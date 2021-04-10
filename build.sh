@@ -3,33 +3,14 @@
 mkdir -p /tmp/rom
 cd /tmp/rom
 
-git config --global user.name GeoPD
-git config --global user.email geoemmanuelpd2001@gmail.com
-
-export rom=OctaviOS
+git config --global user.name lizziya
+git config --global user.email lizziyachan@gmail.com
 
 rom_one(){
  repo init --depth=1 --no-repo-verify -u git://github.com/DotOS/manifest.git -b dot11 -g default,-device,-mips,-darwin,-notdefault
  repo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync -j$(nproc --all)
- git clone https://${TOKEN}@github.com/geopd/device_xiaomi_sakura_TEST.git -b dot-11 device/xiaomi/sakura
- git clone --depth=1 https://${TOKEN}@github.com/geopd/vendor_xiaomi_sakura_TEST.git -b lineage-18.0 vendor/xiaomi
- . build/envsetup.sh && lunch dot_sakura-user
-}
-
-rom_two(){
- repo init --depth=1 --no-repo-verify -u https://github.com/Evolution-X/manifest -b elle -g default,-device,-mips,-darwin,-notdefault
- repo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync -j$(nproc --all)
- git clone https://${TOKEN}@github.com/geopd/device_xiaomi_sakura_TEST.git -b elle device/xiaomi/sakura
- git clone --depth=1 https://${TOKEN}@github.com/geopd/vendor_xiaomi_sakura_TEST.git -b lineage-18.0 vendor/xiaomi
- rm -rf vendor/gms && git clone https://gitlab.com/geopdgitlab/vendor_gapps -b eleven vendor/gms
- . build/envsetup.sh && lunch evolution_sakura-user
-}
-
-rom_three(){
- repo init --depth=1 --no-repo-verify -u git://github.com/DotOS/manifest.git -b dot11 -g default,-device,-mips,-darwin,-notdefault
- repo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync -j$(nproc --all)
- git clone https://${TOKEN}@github.com/geopd/device_xiaomi_sakura_TEST.git -b dot-R device/xiaomi/sakura
- git clone --depth=1 https://${TOKEN}@github.com/geopd/vendor_xiaomi_sakura_TEST.git -b lineage-18.1 vendor/xiaomi
+ git clone https://${TOKEN}/device_xiaomi_sakura_TEST.git -b dot-R device/xiaomi/sakura
+ git clone --depth=1 https://${TOKEN}/vendor_xiaomi_sakura_TEST.git -b lineage-18.1 vendor/xiaomi
  rm -rf hardware/qcom-caf/msm8996/audio hardware/qcom-caf/msm8996/display hardware/qcom-caf/msm8996/media
  git clone https://github.com/Jabiyeff-Project/android_hardware_qcom_audio -b 11.0 hardware/qcom-caf/msm8996/audio
  git clone https://github.com/Jabiyeff-Project/android_hardware_qcom_display -b 11.0 hardware/qcom-caf/msm8996/display
@@ -37,11 +18,24 @@ rom_three(){
  . build/envsetup.sh && lunch dot_sakura-user
 }
 
-rom_four(){
+rom_two(){
+ repo init --depth=1 --no-repo-verify -u git://github.com/DotOS/manifest.git -b dot11 -g default,-device,-mips,-darwin,-notdefault
+ repo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync -j$(nproc --all)
+ git clone https://${TOKEN}/device_xiaomi_sakura_TEST.git -b dot11-cam device/xiaomi/sakura
+ git clone --depth=1 https://${TOKEN}/vendor_xiaomi_sakura_TEST.git -b lineage-18.1-check vendor/xiaomi
+ rm -rf hardware/qcom-caf/msm8996/audio hardware/qcom-caf/msm8996/display hardware/qcom-caf/msm8996/media
+ git clone https://github.com/Jabiyeff-Project/android_hardware_qcom_audio -b 11.0 hardware/qcom-caf/msm8996/audio
+ git clone https://github.com/Jabiyeff-Project/android_hardware_qcom_display -b 11.0 hardware/qcom-caf/msm8996/display
+ git clone https://github.com/Jabiyeff-Project/android_hardware_qcom_media -b 11.0 hardware/qcom-caf/msm8996/media
+ rm -rf vendor/qcom/opensource/usb
+ . build/envsetup.sh && lunch dot_sakura-userdebug
+}
+
+rom_three(){
  repo init --depth=1 --no-repo-verify -u https://github.com/geopd/platform_manifest -b 11 -g default,-device,-mips,-darwin,-notdefault
  repo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync -j$(nproc --all)
- git clone https://${TOKEN}@github.com/geopd/device_xiaomi_sakura_TEST.git -b Octavi-11 device/xiaomi/sakura
- git clone --depth=1 https://${TOKEN}@github.com/geopd/vendor_xiaomi_sakura_TEST.git -b lineage-18.1 vendor/xiaomi
+ git clone https://${TOKEN}/device_xiaomi_sakura_TEST.git -b Octavi-11 device/xiaomi/sakura
+ git clone --depth=1 https://${TOKEN}/vendor_xiaomi_sakura_TEST.git -b lineage-18.1 vendor/xiaomi
  rm -rf hardware/qcom-caf/msm8996/audio hardware/qcom-caf/msm8996/display hardware/qcom-caf/msm8996/media
  git clone https://github.com/Jabiyeff-Project/android_hardware_qcom_audio -b 11.0 hardware/qcom-caf/msm8996/audio
  git clone https://github.com/Jabiyeff-Project/android_hardware_qcom_display -b 11.0 hardware/qcom-caf/msm8996/display
@@ -59,7 +53,7 @@ rom_four(){
  . build/envsetup.sh && lunch octavi_sakura-user
 }
 
-git clone --depth=1 https://${TOKEN}@github.com/geopd/kernel_xiaomi_msm8953 -b beta-4.9-Q kernel/xiaomi/msm8953
+git clone --depth=1 https://${TOKEN}/kernel_xiaomi_msm8953 -b test-cam kernel/xiaomi/msm8953
 git clone https://github.com/geopd/vendor_custom_prebuilts -b master vendor/custom/prebuilts
 git clone --depth=1 https://github.com/mvaisakh/gcc-arm64.git -b gcc-master prebuilts/gcc/linux-x86/aarch64/aarch64-elf
 
@@ -69,11 +63,9 @@ bash ~/git_cookies.sh
 case "${rom}" in
  "dotOS") rom_one
     ;;
- "EvolutionX") rom_two
+ "dotOS-Rc") rom_two
     ;;
- "dotOS-R") rom_three
-    ;;
- "OctaviOS") rom_four
+ "OctaviOS") rom_three
     ;;
  *) echo "Invalid option!"
     exit 1
@@ -99,9 +91,7 @@ ccache -M 50G && ccache -o compression=true && ccache -z
 case "${rom}" in
  "dotOS") make bacon -j18 | tee build.log
     ;;
- "EvolutionX") mka bacon -j18 | tee build.log
-    ;;
- "dotOS-R") make bacon -j18 | tee build.log
+ "dotOS-Rc") make bacon -j18 | tee build.log
     ;;
  "OctaviOS") mka octavi -j18 | tee build.log
     ;;

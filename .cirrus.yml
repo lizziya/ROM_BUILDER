@@ -8,16 +8,17 @@ task:
   environment:
     CIRRUS_CLONE_DEPTH: 1
     CIRRUS_WORKING_DIR: "/tmp/ci"
-    rclone_config: "ENCRYPTED[d79606ef07066fa4c032a3d6856423ec8800f30f7ce5e7636e67d6edcd8f69d654788762ece25de098731ce535e917eb]"
-    TOKEN: "ENCRYPTED[97d6b218e52d027956a63019b9072bd2406bf19dd4c762a46681570c493b7919b43a27b37ec2c402412920775c6f67bb]"
-    CHATID: "ENCRYPTED[d26c8dc45079ba8a1bd065b43e4c7c332aad1fbe59e8e2c872cdc0cfc2e4cb6b0a417b2713535653e1100b05cdf16352]"
-    BOTTOKEN: "ENCRYPTED[5f66a3ce45010e58a5c3b14da152bd165672dc117b35d4452b33ff7b19aad5d9444f91e46c188247590c0fab26d0d971]"
-    GIT_COOKIES: "ENCRYPTED[8a511e77b1df0239dccd8a670c98ae6454bcedaea68bc4722fbd7f0f6e91bf7670332659ee9ea90c199dfe52b3d9b637]"
-    TDRIVE: "ENCRYPTED[a652c76e8daec21a619b56878ccad3c268174d0400e4f46a79d41fc4c643a4f401a1a5512d292b8e7813c28c0dcbf4c8]"
+    rclone_config: "ENCRYPTED[2c5bb21245a42b7f5a0fb13d3229894e4b4397d2ecff63f89e34387d5a34d6e6a58a2319a723db9cb7b4ef9c5f500fa2]"
+    TOKEN: "ENCRYPTED[a696f8a8c737caed23987978844adf83f4d9acf9cf788ca25ddbf9dab6b679472183e0879e95fee78681d018fc6089d6]"
+    CHATID: "ENCRYPTED[ec610bb0cf01a7b9c4e8f56a5a5bca30f56df98695db16d2ac68f33e71c363589410e3d341134ba963746d1220da2d63]"
+    BOTTOKEN: "ENCRYPTED[140e001cd10cd7036103b3503248c093742819267005a6e8b396c3914193483a9775873d758cb67995089d62ac0d62c5]"
+    GIT_COOKIES: "ENCRYPTED[49d89d8e5cc6c0ab64075869aae63dce072cefad6f5724788c5d2fc67653d16623999a532ee4bfdff1a73874f4f25df0]"
+    TDRIVE: "ENCRYPTED[83cd5edc31aa5c4e003730c99ac7bb0f74032f05689ed42ce104ee3400638c7b3a4a520f59b7aa2311dec50e5da233b5]"
+    rom: "dotOS-Rc"
   download_ccache_background_script:
       - cd /tmp && mkdir -p ~/.config/rclone
       - echo "$rclone_config" > ~/.config/rclone/rclone.conf
-      - rclone copy brrbrr:ccache/ccache.tar.zst /tmp -P && tar -xaf ccache.tar.zst
+      - rclone copy brrbrr:ccache/$rom/ccache.tar.zst /tmp -P && tar -xaf ccache.tar.zst
   upload_ccache_background_script:
       - cd /tmp
       - while true; do sleep 95m; tar "-I zstd -1 -T8" -cf ccache.tar.zst ccache; rclone copy ccache.tar.zst brrbrr:ccache -P; rm ccache.tar.zst; done
@@ -25,4 +26,4 @@ task:
       - bash build.sh
   final_upload_ccache_script:
       - cd /tmp && tar "-I zstd -1 -T8" -cf ccache.tar.zst ccache
-      - rclone copy ccache.tar.zst brrbrr:ccache -P
+      - rclone copy ccache.tar.zst brrbrr:ccache/$rom -P
